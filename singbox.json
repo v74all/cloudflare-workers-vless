@@ -1,0 +1,81 @@
+{
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "remote-dns",
+        "address": "https://1.1.1.1/dns-query",
+        "detour": "vless-worker-out"
+      },
+      {
+        "tag": "direct-dns",
+        "address": "223.5.5.5",
+        "detour": "direct"
+      }
+    ],
+    "rules": [
+      {
+        "geosite": "category-ir",
+        "server": "direct-dns"
+      }
+    ]
+  },
+  "inbounds": [
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 2080,
+      "sniff": true
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "vless",
+      "tag": "vless-worker-out",
+      "server": "104.16.132.229",
+      "server_port": 443,
+      "uuid": "d3b07384-d113-49d6-a2a4-b885315e34b1",
+      "tls": {
+        "enabled": true,
+        "server_name": "vless-edge.workers.dev",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/vless",
+        "headers": {
+          "Host": "vless-edge.workers.dev"
+        }
+      }
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "block",
+      "tag": "block"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "geoip": "ir",
+        "outbound": "direct"
+      },
+      {
+        "geosite": "category-ir",
+        "outbound": "direct"
+      }
+    ],
+    "final": "vless-worker-out",
+    "auto_detect_interface": true
+  }
+}

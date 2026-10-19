@@ -1,0 +1,7 @@
+name = "vless-edge-worker"
+main = "_worker.js"
+compatibility_date = "2026-10-15"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+UUID = "d3b07384-d113-49d6-a2a4-b885315e34b1"
